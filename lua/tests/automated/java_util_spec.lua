@@ -1,0 +1,5 @@
+describe("java_util", function()
+  it("delete me", function()
+    assert.is_true(true)
+  end)
+end)

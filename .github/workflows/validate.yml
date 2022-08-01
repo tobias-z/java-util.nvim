@@ -1,0 +1,81 @@
+name: Validate
+
+on: [push, pull_request]
+
+jobs:
+  format:
+    name: format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: JohnnyMorganz/stylua-action@1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --color always --check lua/
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y luarocks
+          sudo luarocks install luacheck
+
+      - name: Lint
+        run: sudo make lint
+
+  # Neatly stolen from telescope.nvim
+  test:
+    name: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            url: https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz
+            manager: sudo apt-get
+            packages: -y fd-find
+          - os: ubuntu-latest
+            url: https://github.com/neovim/neovim/releases/download/v0.7.0/nvim-linux64.tar.gz
+            manager: sudo apt-get
+            packages: -y fd-find
+          - os: macos-latest
+            url: https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
+            manager: brew
+            packages: fd
+          - os: macos-latest
+            url: https://github.com/neovim/neovim/releases/download/v0.7.0/nvim-macos.tar.gz
+            manager: brew
+            packages: fd
+    steps:
+      - uses: actions/checkout@v2
+      - run: date +%F > todays-date
+      - name: Restore from todays cache
+        uses: actions/cache@v2
+        with:
+          path: _neovim
+          key: ${{ runner.os }}-${{ matrix.url }}-${{ hashFiles('todays-date') }}
+
+      - name: Prepare
+        run: |
+          ${{ matrix.manager }} update
+          ${{ matrix.manager }} install ${{ matrix.packages }}
+          test -d _neovim || {
+            mkdir -p _neovim
+            curl -sL ${{ matrix.url }} | tar xzf - --strip-components=1 -C "${PWD}/_neovim"
+          }
+          mkdir -p ~/.local/share/nvim/site/pack/vendor/start
+          git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
+          ln -s $(pwd) ~/.local/share/nvim/site/pack/vendor/start
+
+      - name: Run tests
+        run: |
+          export PATH="${PWD}/_neovim/bin:${PATH}"
+          export VIM="${PWD}/_neovim/share/nvim/runtime"
+          nvim --version
+          make test
