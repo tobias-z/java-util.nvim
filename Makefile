@@ -8,3 +8,6 @@ format:
 
 lint:
 	luacheck lua
+
+gendoc:
+	nvim --headless --noplugin -u scripts/minimal_doc.vim -c "luafile ./scripts/generate_doc.lua" -c 'qa'
