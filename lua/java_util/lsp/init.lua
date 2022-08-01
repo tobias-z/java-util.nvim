@@ -1,4 +1,4 @@
-local rename = require("java_util.lsp._internal.rename")
+local rename = require("java_util.lsp.internal.rename").rename
 
 local lsp = {}
 

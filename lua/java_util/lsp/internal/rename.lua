@@ -2,23 +2,9 @@ local string_util = require("java_util.string_util")
 local lsp_util = require("java_util.lsp.util")
 local ts_utils = require("nvim-treesitter.ts_utils")
 
-local M = {}
+local rename = {}
 
-function M.rename(new_name, opts)
-  opts = opts or {}
-
-  if vim.o.filetype == "java" then
-    local node_at_cursor = ts_utils.get_node_at_cursor(0)
-    if M._is_field(node_at_cursor) then
-      M._rename_field({ new_name = new_name, opts = opts, node_at_cursor = node_at_cursor })
-      return
-    end
-  end
-
-  vim.lsp.buf.rename(new_name, opts)
-end
-
-function M._is_field(node)
+local function is_field(node)
   local first_parent = node:parent()
 
   if first_parent:type() == "field_access" then
@@ -32,7 +18,21 @@ function M._is_field(node)
   return false
 end
 
-function M._with_name(new_name, callback)
+function rename.rename(new_name, opts)
+  opts = opts or {}
+
+  if vim.o.filetype == "java" then
+    local node_at_cursor = ts_utils.get_node_at_cursor(0)
+    if is_field(node_at_cursor) then
+      rename._rename_field({ new_name = new_name, opts = opts, node_at_cursor = node_at_cursor })
+      return
+    end
+  end
+
+  vim.lsp.buf.rename(new_name, opts)
+end
+
+local function with_name(new_name, callback)
   local old_name = vim.fn.expand("<cword>")
   if new_name ~= nil then
     callback(new_name, old_name)
@@ -45,7 +45,7 @@ function M._with_name(new_name, callback)
   end
 end
 
-function M._rename_field(opts)
+function rename._rename_field(opts)
   local params = vim.lsp.util.make_position_params(0)
   params.context = { includeDeclaration = true }
   lsp_util.request_all({
@@ -76,7 +76,7 @@ function M._rename_field(opts)
       end
     end
 
-    M._with_name(opts.new_name, function(new_name, old_name)
+    with_name(opts.new_name, function(new_name, old_name)
       local uppercase_old_name = string_util.first_to_upper(old_name)
       local uppercase_new_name = string_util.first_to_upper(new_name)
       local getter = string.format("%s%s", "get", uppercase_old_name)
@@ -119,3 +119,5 @@ function M._rename_field(opts)
     end)
   end)
 end
+
+return rename
