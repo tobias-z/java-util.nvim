@@ -1,0 +1,25 @@
+================================================================================
+LSP                                                              *java_util.lsp*
+
+This is something about java_util.lsp
+
+lsp.rename({new_name}, {opts})                        *java_util.lsp.rename()*
+    Rename what you are currently hovering.
+
+
+    Parameters: ~
+        {new_name} (string|nil)  If new_name is passed you will not be
+                                 prompted for a new new_name
+        {opts}     (table|nil)   options which will be passed to the
+                                 `vim.lsp.buf.rename`
+
+    Options: ~
+        {filter} (function|nil)  Predicate to filter clients used for rename.
+                                 Receives the attached clients as argument and
+                                 must return a list of clients.
+        {name}   (string|nil)    Restrict clients used for rename to ones
+                                 where client.name matches this field.
+
+
+
+ vim:tw=78:ts=8:ft=help:norl:
