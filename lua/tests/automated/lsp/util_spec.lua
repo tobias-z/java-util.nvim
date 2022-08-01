@@ -49,11 +49,10 @@ describe("util", function()
     end)
 
     it("given 2 requests when all fails then dont call the callback", function()
-      local count = 0
       local called = was_called({
         { bufnr = 0, method = "textDocument/references", params = {} },
         { bufnr = 0, method = "textDocument/definition", params = {} },
-      }, function(_, _, _, fn) end)
+      }, function(_, _, _, _) end)
 
       assert.is_false(called)
     end)
