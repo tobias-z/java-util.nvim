@@ -1,0 +1,5 @@
+describe("rename", function()
+  it("something", function()
+    assert.is_true(true)
+  end)
+end)
