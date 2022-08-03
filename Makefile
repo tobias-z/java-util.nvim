@@ -1,5 +1,6 @@
 test:
 	nvim --headless \
+	--noplugin \
 	-u scripts/minimal.vim \
 	-c "PlenaryBustedDirectory lua/tests/java_util/automated { minimal_init = './scripts/minimal.vim' }"
 

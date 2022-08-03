@@ -46,6 +46,8 @@ luac.out
 *.war
 *.ear
 **/target
+**/.factorypath
 **/.project
 **/.classpath
 **/.settings
+jdtls-workspace
