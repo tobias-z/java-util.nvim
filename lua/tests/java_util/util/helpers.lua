@@ -17,31 +17,29 @@ function helpers.build_snapshot(snapshot_file, test_file)
   local file = string.format("%s/%s.java", builders_dir, snapshot_file)
   print("Building snapshot for: " .. snapshot_file .. " using builder: " .. test_file)
 
-  Job
-    :new({
-      command = "nvim",
-      args = {
-        "--noplugin",
-        "-u",
-        "scripts/minimal.vim",
-        "-c",
-        "set noswapfile",
-        "-c",
-        [[luafile lua/tests/java_util/util/setup_jdtls.lua]],
-        "-c",
-        string.format("e %s", file),
-        "-c",
-        [[lua require("tests.java_util.util.helpers").wait_for_ready_lsp()]],
-        "-c",
-        string.format([[luafile lua/tests/java_util/builders/%s.lua]], test_file),
-        "-c",
-        string.format("wq! %s/%s.snapshot", snapshots_dir, snapshot_file),
-      },
-      on_stdout = function(_, data)
-        print(data)
-      end,
-    })
-    :sync(20000)
+  Job:new({
+    command = "nvim",
+    args = {
+      "--noplugin",
+      "-u",
+      "scripts/minimal.vim",
+      "-c",
+      "set noswapfile",
+      "-c",
+      [[luafile lua/tests/java_util/util/setup_jdtls.lua]],
+      "-c",
+      string.format("e %s", file),
+      "-c",
+      [[lua require("tests.java_util.util.helpers").wait_for_ready_lsp()]],
+      "-c",
+      string.format([[luafile lua/tests/java_util/builders/%s.lua]], test_file),
+      "-c",
+      string.format("wq! %s/%s.snapshot", snapshots_dir, snapshot_file),
+    },
+    on_stdout = function(_, data)
+      print(data)
+    end,
+  }):sync(20000)
 end
 
 function helpers.snapshot_matches(snapshot, match)
