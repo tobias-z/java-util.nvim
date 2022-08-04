@@ -8,8 +8,18 @@ end
 local sys_name = vim.fn.has("mac") == 1 and "mac" or "linux"
 
 local jdtls_location = os.getenv("JAVA_UTIL_JDTLS")
-if not jdtls_location then
-  error("missing env variable $JAVA_UTIL_JDTLS required to run tests.")
+local java_home = os.getenv("JAVA_HOME")
+if not jdtls_location or not java_home then
+  error(string.format(
+    [[
+env variables $JAVA_UTIL_JDTLS and $JAVA_HOME are required to setup jdlts.
+Found:
+JAVA_UTIL_JDTLS=%s
+JAVA_HOME=%s
+]]   ,
+    jdtls_location,
+    java_home
+  ))
   return
 end
 
@@ -20,7 +30,6 @@ end
 
 local config = {}
 
--- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
 config.cmd = {
   "java",
 

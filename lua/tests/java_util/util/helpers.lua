@@ -41,7 +41,6 @@ function helpers.build_snapshot(snapshot_file, test_file)
           print(data)
         end,
       })
-      -- Might need to up this
       :sync(20000)
 end
 

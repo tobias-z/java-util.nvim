@@ -77,7 +77,6 @@ function rename._rename_field(opts)
     end
 
     with_name(opts.new_name, function(new_name, old_name)
-      print(new_name, old_name)
       local uppercase_old_name = string_util.first_to_upper(old_name)
       local uppercase_new_name = string_util.first_to_upper(new_name)
       local getter = string.format("%s%s", "get", uppercase_old_name)
@@ -92,7 +91,7 @@ function rename._rename_field(opts)
             1]
         local original_len = string.len(line)
 
-        if string_util.starts_with(line, getter) or string_util.starts_with(line, setter) then
+        if vim.startswith(line, getter) or vim.startswith(line, setter) then
           local beginning = string.sub(line, 0, 3)
           local ending = string.sub(line, string.len(string.format("%s%s", beginning, uppercase_old_name)) + 1)
           line = string.format("%s%s%s", beginning, uppercase_new_name, ending)
