@@ -1,4 +1,10 @@
-local jdtls = require("jdtls")
+local has_jdtls, jdtls = pcall(require, "jdtls")
+
+if not has_jdtls then
+  error("Missing jdtls required for running tests")
+  return
+end
+
 local sys_name = vim.fn.has("mac") == 1 and "mac" or "linux"
 
 local jdtls_location = os.getenv("JAVA_UTIL_JDTLS")
@@ -41,15 +47,6 @@ config.cmd = {
 }
 
 config.root_dir = root_dir
-
--- config.settings = {
---   java = {
---   },
--- }
-
-config.on_attach = function()
-  print("attached")
-end
 
 local group = vim.api.nvim_create_augroup("JDTLS_GROUP", { clear = true })
 

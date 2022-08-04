@@ -1,10 +1,3 @@
-local helpers = require("tests.java_util.util.helpers")
-
-describe("rename", function()
-  it("Can rename field aswell as lombok builder, setter and getter", function()
-    local match = helpers.snapshot_matches(
-      "RenameLombokField",
-      [[
 package io.github.tobiasz.testproject.builders;
 
 import lombok.Builder;
@@ -24,9 +17,4 @@ public class RenameLombokField {
         renameLombokField.setChanged("bob");
         System.out.println(renameLombokField.getChanged());
     }
-}]]
-    )
-
-    assert.is_true(match)
-  end)
-end)
+}
