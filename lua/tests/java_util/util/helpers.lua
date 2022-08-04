@@ -33,7 +33,7 @@ function helpers.build_snapshot(snapshot_file, test_file)
           "-c",
           [[lua require("tests.java_util.util.helpers").wait_for_ready_lsp()]],
           "-c",
-          string.format([[luafile %s/lua/tests/java_util/builders/%s.lua]], vim.fn.getcwd(), test_file),
+          string.format([[luafile lua/tests/java_util/builders/%s.lua]], test_file),
           "-c",
           string.format("wq! %s/%s.snapshot", snapshots_dir, snapshot_file),
         },
