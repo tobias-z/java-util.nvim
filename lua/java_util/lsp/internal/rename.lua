@@ -87,8 +87,7 @@ function rename._rename_field(opts)
         vim.fn.bufload(bufnr)
         local start = reference.range.start
         local the_end = reference.range["end"]
-        local line = vim.api.nvim_buf_get_text(bufnr, start.line, start.character, the_end.line, the_end.character, {})[
-            1]
+        local line = vim.api.nvim_buf_get_text(bufnr, start.line, start.character, the_end.line, the_end.character, {})[1]
         local original_len = string.len(line)
 
         if vim.startswith(line, getter) or vim.startswith(line, setter) then
@@ -100,8 +99,7 @@ function rename._rename_field(opts)
           line = string.format("%s%s", new_name, ending)
         end
 
-        vim.api.nvim_buf_set_text(bufnr, start.line, start.character, start.line, start.character + original_len,
-          { line })
+        vim.api.nvim_buf_set_text(bufnr, start.line, start.character, start.line, start.character + original_len, { line })
       end
     end)
   end)

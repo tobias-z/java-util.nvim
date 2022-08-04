@@ -16,7 +16,7 @@ env variables $JAVA_UTIL_JDTLS and $JAVA_HOME are required to setup jdlts.
 Found:
 JAVA_UTIL_JDTLS=%s
 JAVA_HOME=%s
-]]   ,
+]],
     jdtls_location,
     java_home
   ))
