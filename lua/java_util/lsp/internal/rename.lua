@@ -90,7 +90,7 @@ function rename._rename_field(opts)
         local line = vim.api.nvim_buf_get_text(bufnr, start.line, start.character, the_end.line, the_end.character, {})[1]
         local original_len = string.len(line)
 
-        if string_util.starts_with(line, getter) or string_util.starts_with(line, setter) then
+        if vim.startswith(line, getter) or vim.startswith(line, setter) then
           local beginning = string.sub(line, 0, 3)
           local ending = string.sub(line, string.len(string.format("%s%s", beginning, uppercase_old_name)) + 1)
           line = string.format("%s%s%s", beginning, uppercase_new_name, ending)

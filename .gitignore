@@ -39,3 +39,15 @@ luac.out
 *.x86_64
 *.hex
 
+# Java
+*.class
+**/.idea
+*.jar
+*.war
+*.ear
+**/target
+**/.factorypath
+**/.project
+**/.classpath
+**/.settings
+jdtls-workspace
