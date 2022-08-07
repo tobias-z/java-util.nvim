@@ -52,7 +52,7 @@ config.cmd = {
   "-configuration",
   jdtls_location .. "/config_" .. sys_name,
   "-data",
-  string.format("%s/%s", vim.fn.getcwd(), "jdtls-workspace"),
+  string.format("%s/%s", vim.fn.getcwd(), ".jdtls-workspace"),
 }
 
 config.root_dir = root_dir
