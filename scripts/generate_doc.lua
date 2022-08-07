@@ -6,6 +6,7 @@ docs.test = function()
   -- Filepaths that should generate docs
   local input_files = {
     "./lua/java_util/lsp/init.lua",
+    "./lua/java_util/command.lua",
   }
 
   -- Maybe sort them that depends what you want and need
