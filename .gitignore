@@ -51,3 +51,6 @@ luac.out
 **/.classpath
 **/.settings
 .jdtls-workspace
+
+doc/tags
+.luacheckcache
