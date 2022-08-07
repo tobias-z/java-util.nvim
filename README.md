@@ -2,7 +2,7 @@
 
 # java-util.nvim
 
-`java-util.nvim` aims to provide features that extend the features of jdtls
+`java-util.nvim` aims to provide extra functionality that extend the defaults of jdtls
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 ![Main build](https://img.shields.io/github/workflow/status/tobias-z/java-util.nvim/Validate?label=main%20build)
