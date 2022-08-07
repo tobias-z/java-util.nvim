@@ -42,3 +42,9 @@ To correctly validate that everything is still working fine, make sure to genera
 The documentation is generated automatically from function header documentation. This is made possible by using a treesitter grammar created by [TJ](https://github.com/tjdevries).
 
 For information about how to correctly write documentation checkout [this guide](https://github.com/tjdevries/tree-sitter-lua/blob/master/HOWTO.md)
+
+When pushing changes to the docs, they are automatically generated during a ci pipeline.
+
+Ones they are generated they will be pushed to your current branch, so you can see the changes.
+
+If the documentation was not exactly what you wanted, you can do `git commit --amend` and `git push --force` to remove the github ci commit again
