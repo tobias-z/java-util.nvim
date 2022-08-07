@@ -84,6 +84,6 @@ For more in depth information about specific functions see `:help java_util`
 
 ## Contributing
 
-Looking to contribute? Please read the CONTRIBUTING.md file, which contains information about making a PR.
+Looking to contribute? Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file, which contains information about making a PR.
 
 Any feedback is very appreciated!
