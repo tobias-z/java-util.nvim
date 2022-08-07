@@ -15,6 +15,7 @@
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Features](#features)
+  - [LSP](#lsp)
 
 ## Getting Started
 
@@ -51,4 +52,38 @@ use({
 
 ## Usage
 
+Functions can be executed through either user commands or calling lua functions
+
+Example using lua
+
+```lua
+local opts = {
+  noremap = true,
+  silent = true,
+--  buffer = bufnr (if this is done during an lsp on_attach)
+}
+
+vim.keymap.set("n", "<leader>rr", require("java_util.lsp").rename, opts)
+```
+
+Example using vimscript
+
+```viml
+nnoremap <leader>rr <cmd>JavaUtil lsp_rename<cr>
+```
+
 ## Features
+
+For more in depth information about specific functions see `:help java_util`
+
+### LSP
+
+| Functions    | Description                                                 |
+| ------------ | ----------------------------------------------------------- |
+| `lsp.rename` | Renames the word you are hovering. Supports lombok renaming |
+
+## Contributing
+
+Looking to contribute? Please read the CONTRIBUTING.md file, which contains information about making a PR.
+
+Any feedback is very appreciated!
