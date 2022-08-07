@@ -1,4 +1,15 @@
 ================================================================================
+COMMAND                                                      *java_util.command*
+
+Java Util functions can be run through user commands. These can be quite useful
+if you don't want to map everything to a keybind.
+
+Every command is run through `JavaUtil {command}` Example:
+:JavaUtil lsp_rename
+
+
+
+================================================================================
 LSP                                                              *java_util.lsp*
 
 The Java Util lsp module exposes a collection of functions that extend or
