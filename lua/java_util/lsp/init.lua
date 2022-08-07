@@ -3,9 +3,9 @@
 ---@config { ['field_heading'] = "Options", ["module"] = "java_util.lsp" }
 
 ---@brief [[
---- The Java Util lsp module exposes a collection of functions that extend or change the functionality of the standard java language server
+--- The Java Util lsp module exposes a collection of functions that extend or change the functionality of the standard java language server.
 ---
---- The behaviour of a lot of these functions are partly inspired by how IntelliJ functions
+--- The behaviour of a lot of these functions are partly inspired by how IntelliJ functions.
 ---@brief ]]
 
 local lsp = {}

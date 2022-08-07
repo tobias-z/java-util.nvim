@@ -1,0 +1,20 @@
+package io.github.tobiasz.testproject.builders;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+public class RenameLombokField {
+
+    private String changed;
+
+    public static void testMethod() {
+        RenameLombokField renameLombokField =
+                RenameLombokField.builder().changed("username").build();
+        renameLombokField.setChanged("bob");
+        System.out.println(renameLombokField.getChanged());
+    }
+}

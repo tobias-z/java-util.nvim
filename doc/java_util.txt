@@ -2,10 +2,10 @@
 LSP                                                              *java_util.lsp*
 
 The Java Util lsp module exposes a collection of functions that extend or
-change the functionality of the standard java language server
+change the functionality of the standard java language server.
 
 The behaviour of a lot of these functions are partly inspired by how IntelliJ
-functions
+functions.
 
 lsp.rename({new_name}, {opts})                        *java_util.lsp.rename()*
     Rename what you are currently hovering. If you are hovering a field and you
