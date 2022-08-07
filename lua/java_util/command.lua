@@ -7,6 +7,7 @@
 --- Java Util functions can be run through user commands. These can be quite useful if you don't want to map everything to a keybind.
 ---
 --- Every command is run through `JavaUtil {command}`
+---
 --- Example:
 --- <pre>
 --- :JavaUtil lsp_rename
