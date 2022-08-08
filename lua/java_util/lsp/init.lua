@@ -29,4 +29,7 @@ end
 ---@field name string|nil: Restrict clients used for rename to ones where client.name matches this field.
 lsp.rename = require_on_exported_call("java_util.lsp.internal.rename").rename
 
+-- TODO: Add docs
+lsp.create_test = require_on_exported_call("java_util.lsp.internal.create_test").create_test
+
 return lsp

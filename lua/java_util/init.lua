@@ -1,8 +1,11 @@
-local M = {}
+local java_util = {}
 
-function M.setup(opts)
+-- TODO: Add docs for config fields
+function java_util.setup(opts)
   opts = opts or {}
-  print(vim.inspect(opts))
+  local config = require("java_util.config")
+  config.set_defaults()
+  config.values = vim.tbl_deep_extend("force", config.values, opts)
 end
 
-return M
+return java_util

@@ -1,5 +1,6 @@
 local fs_util = require("java_util.fs_util")
 local lsp_util = require("java_util.lsp.util")
+local values = require("java_util.config").values
 
 local create_test = {}
 
@@ -20,7 +21,7 @@ local function get_src_root(path)
 end
 
 local function with_filepath(test_location, default_testname, callback)
-  vim.ui.input({ prompt = "Test name:", default = default_testname }, function(test_filename)
+  vim.ui.input({ prompt = "Test class name:", default = default_testname }, function(test_filename)
     if not test_filename then
       return
     end
@@ -33,6 +34,32 @@ local function with_filepath(test_location, default_testname, callback)
 
     callback(file, test_filename)
   end)
+end
+
+---@param opts table
+---@field filename string
+---@field class_snippet function
+---@filed classname string
+---@filed package string
+local function insert_snippet_in_file(opts)
+  local uri = string.format("file://%s", opts.filepath)
+  local bufnr = vim.uri_to_bufnr(uri)
+  vim.fn.bufload(bufnr)
+
+  local create_snip = opts.class_snippet({ package = opts.package, classname = opts.classname })
+
+  print(vim.inspect(create_snip))
+
+  if type(create_snip) == "string" then
+  elseif type(create_snip) == "table" and create_snip.snippet ~= nil then
+    local ok, luasnip = pcall(require, "luasnip")
+    if ok then
+      lsp_util.jump_to_file(uri)
+      luasnip.snip_expand(create_snip)
+    end
+  else
+    vim.notify("Unsupported return value from class snippet")
+  end
 end
 
 function create_test.create_test()
@@ -49,10 +76,38 @@ function create_test.create_test()
 
     -- TODO: Select which test you want to use. Read from config
     -- Insert the selected test to the file
-
+    local class_snippets = values.lsp.test.class_snippets
     local package = lsp_util.get_test_package(src_root, location)
-    print(package)
-    print(classname)
+
+    local snip_len = vim.tbl_count(class_snippets)
+    if snip_len == 0 then
+      -- TODO: Move to the file
+      lsp_util.jump_to_file(string.format("file://%s", filepath))
+    elseif snip_len == 1 then
+      local name
+      for key, _ in pairs(class_snippets) do
+        name = key
+      end
+      insert_snippet_in_file({
+        filepath = filepath,
+        classname = classname,
+        package = package,
+        class_snippet = class_snippets[name],
+      })
+      values.lsp.test.after_snippet({ snippet = name })
+    else
+      vim.ui.select(vim.tbl_keys(class_snippets), {
+        prompt = "Test snippet to use:",
+      }, function(choice)
+        insert_snippet_in_file({
+          filepath = filepath,
+          classname = classname,
+          package = package,
+          class_snippet = class_snippets[choice],
+        })
+        values.lsp.test.after_snippet({ snippet = choice })
+      end)
+    end
   end)
 end
 

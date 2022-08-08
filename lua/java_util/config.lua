@@ -1,3 +1,5 @@
+---@diagnostic disable: unused-local
+
 local config = {}
 
 _JavaUtilConfigValues = _JavaUtilConfigValues or {}
@@ -8,7 +10,7 @@ function config.set_defaults()
   config.values = {
     lsp = {
       test = {
-        after_snippet = function()
+        after_snippet = function(opts)
           local has_jdtls, jdtls = pcall(require, "jdtls")
           if has_jdtls then
             jdtls.organize_imports()
@@ -17,15 +19,15 @@ function config.set_defaults()
         class_snippets = {
           ["Basic"] = function(info)
             local has_luasnip, luasnip = pcall(require, "luasnip")
-            if not has_luasnip then
+            if has_luasnip then
               return string.format(
                 [[
-package %s
+          package %s
 
-class %s {
+          class %s {
 
-}
-            ]],
+          }
+                      ]],
                 info.package,
                 info.classname
               )
@@ -35,13 +37,13 @@ class %s {
               "_",
               string.format(
                 [[
-package %s
+          package %s
 
-class %s {
+          class %s {
 
-    $0
-}
-            ]],
+              $0
+          }
+                      ]],
                 info.package,
                 info.classname
               )
@@ -52,7 +54,5 @@ class %s {
     },
   }
 end
-
-config.set_defaults()
 
 return config

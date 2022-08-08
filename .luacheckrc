@@ -14,3 +14,7 @@ read_globals = {
 globals = {
   "_JavaUtilConfigValues",
 }
+
+ignore = {
+    "212", -- Unused argument _arg_name is easier to understand than _.
+}

@@ -23,7 +23,7 @@ local function get_package(src_root, file_location, is_test)
     file_location,
     string.len(src_root) + 1 + string.len(string.format("/%s/java/", is_test and "test" or "main"))
   )
-  return string.gsub(removed_beginning, "/", ".")
+  return string.format("%s;", string.gsub(removed_beginning, "/", "."))
 end
 
 function lsp_util.get_test_package(src_root, file_location)
@@ -32,6 +32,18 @@ end
 
 function lsp_util.get_main_package(src_root, file_location)
   return get_package(src_root, file_location, false)
+end
+
+function lsp_util.jump_to_file(uri)
+  vim.lsp.util.jump_to_location({
+    range = {
+      start = {
+        character = 0,
+        line = 0,
+      },
+    },
+    uri = uri,
+  }, "utf-8")
 end
 
 return lsp_util
