@@ -23,7 +23,7 @@ local function get_package(src_root, file_location, is_test)
     file_location,
     string.len(src_root) + 1 + string.len(string.format("/%s/java/", is_test and "test" or "main"))
   )
-  return string.format("%s;", string.gsub(removed_beginning, "/", "."))
+  return string.gsub(removed_beginning, "/", ".")
 end
 
 function lsp_util.get_test_package(src_root, file_location)

@@ -48,9 +48,10 @@ local function insert_snippet_in_file(opts)
 
   local create_snip = opts.class_snippet({ package = opts.package, classname = opts.classname })
 
-  print(vim.inspect(create_snip))
-
   if type(create_snip) == "string" then
+    lsp_util.jump_to_file(uri)
+    local lines = vim.split(create_snip, "\n")
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
   elseif type(create_snip) == "table" and create_snip.snippet ~= nil then
     local ok, luasnip = pcall(require, "luasnip")
     if ok then
@@ -81,8 +82,8 @@ function create_test.create_test()
 
     local snip_len = vim.tbl_count(class_snippets)
     if snip_len == 0 then
-      -- TODO: Move to the file
       lsp_util.jump_to_file(string.format("file://%s", filepath))
+      values.lsp.test.after_snippet({})
     elseif snip_len == 1 then
       local name
       for key, _ in pairs(class_snippets) do
