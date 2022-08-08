@@ -63,6 +63,13 @@ local function insert_snippet_in_file(opts)
   end
 end
 
+local function after_snippet(args)
+  local a_snippet = values.lsp.test.after_snippet
+  if a_snippet and type(a_snippet) == "function" then
+    a_snippet(args)
+  end
+end
+
 function create_test.create_test()
   local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
   local default_filename = string.format("%sTest", string.sub(bufname, string.find(bufname, "/[^/]*$") + 1, -6))
@@ -75,15 +82,13 @@ function create_test.create_test()
     fs_util.ensure_directory(location)
     fs_util.create_file(filepath)
 
-    -- TODO: Select which test you want to use. Read from config
-    -- Insert the selected test to the file
     local class_snippets = values.lsp.test.class_snippets
     local package = lsp_util.get_test_package(src_root, location)
 
     local snip_len = vim.tbl_count(class_snippets)
     if snip_len == 0 then
       lsp_util.jump_to_file(string.format("file://%s", filepath))
-      values.lsp.test.after_snippet({})
+      after_snippet({})
     elseif snip_len == 1 then
       local name
       for key, _ in pairs(class_snippets) do
@@ -95,7 +100,7 @@ function create_test.create_test()
         package = package,
         class_snippet = class_snippets[name],
       })
-      values.lsp.test.after_snippet({ snippet = name })
+      after_snippet({ snippet = name })
     else
       vim.ui.select(vim.tbl_keys(class_snippets), {
         prompt = "Test snippet to use:",
@@ -106,7 +111,7 @@ function create_test.create_test()
           package = package,
           class_snippet = class_snippets[choice],
         })
-        values.lsp.test.after_snippet({ snippet = choice })
+        after_snippet({ snippet = choice })
       end)
     end
   end)

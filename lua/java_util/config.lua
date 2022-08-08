@@ -11,6 +11,8 @@ function config.set_defaults()
     lsp = {
       test = {
         use_defaults = true,
+        after_snippet = nil,
+        class_snippets = {},
       },
     },
   }
