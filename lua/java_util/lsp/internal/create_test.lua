@@ -31,7 +31,7 @@ local function with_filepath(test_location, default_testname, callback)
       return
     end
 
-    callback(file)
+    callback(file, test_filename)
   end)
 end
 
@@ -43,14 +43,16 @@ function create_test.create_test()
   local src_root = get_src_root(removed_filename)
   local location = string.gsub(removed_filename, src_root .. "/main", src_root .. "/test")
 
-  with_filepath(location, default_filename, function(filepath)
+  with_filepath(location, default_filename, function(filepath, classname)
     fs_util.ensure_directory(location)
     fs_util.create_file(filepath)
 
-    local package = lsp_util.get_test_package(src_root, location)
-    print(package)
     -- TODO: Select which test you want to use. Read from config
     -- Insert the selected test to the file
+
+    local package = lsp_util.get_test_package(src_root, location)
+    print(package)
+    print(classname)
   end)
 end
 
