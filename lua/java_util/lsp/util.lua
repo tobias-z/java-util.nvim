@@ -18,4 +18,20 @@ function lsp_util.request_all(requests, handler)
   end
 end
 
+local function get_package(src_root, file_location, is_test)
+  local removed_beginning = string.sub(
+    file_location,
+    string.len(src_root) + 1 + string.len(string.format("/%s/java/", is_test and "test" or "main"))
+  )
+  return string.gsub(removed_beginning, "/", ".")
+end
+
+function lsp_util.get_test_package(src_root, file_location)
+  return get_package(src_root, file_location, true)
+end
+
+function lsp_util.get_main_package(src_root, file_location)
+  return get_package(src_root, file_location, false)
+end
+
 return lsp_util
