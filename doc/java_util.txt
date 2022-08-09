@@ -68,6 +68,9 @@ lsp.create_test({opts})                          *java_util.lsp.create_test()*
                                       `lsp.test.class_snippets`. This will
                                       skip the prompt to select a
                                       class_snippet.
+        {testname}      (string|nil)  The name of the test you want to create.
+                                      This will skip the prompt to select a
+                                      testname.
 
 
 
