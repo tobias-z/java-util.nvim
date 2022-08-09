@@ -68,10 +68,7 @@ local function get_class_snippet_name(opts)
   if opts.class_snippet then
     return opts.class_snippet
   end
-  for key, _ in pairs(class_snippets) do
-    -- Is there a better way to do this?
-    return key
-  end
+  return vim.tbl_keys(class_snippets)[1]
 end
 
 local function after_snippet(opts)
