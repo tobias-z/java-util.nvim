@@ -54,3 +54,5 @@ luac.out
 
 doc/tags
 .luacheckcache
+
+lua/tests/testproject/src/test

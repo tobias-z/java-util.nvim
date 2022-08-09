@@ -20,19 +20,46 @@ local function get_src_root(path)
   return path
 end
 
-local function with_filepath(test_location, default_testname, callback)
-  vim.ui.input({ prompt = "Test class name:", default = default_testname }, function(test_filename)
+--- Changes /src/main to /src/test in the closest src_root to the current class
+local function get_test_location(src_root, filepath)
+  local root_split = vim.split(string.sub(src_root, 2), "/")
+
+  local test_location = ""
+  for i, dir in ipairs(vim.split(string.sub(filepath, 2), "/")) do
+    -- is main folder
+    if i ~= #root_split + 1 then
+      test_location = string.format("%s/%s", test_location, dir)
+    else
+      test_location = string.format("%s/test", test_location)
+    end
+  end
+
+  return test_location
+end
+
+local function with_filepath(opts)
+  if opts.testname then
+    local file = string.format("%s/%s.java", opts.test_location, opts.testname)
+    if fs_util.file_exists(file) then
+      vim.notify(string.format("file: '%s' already exists", file), vim.log.levels.ERROR)
+      return
+    end
+    opts.callback(file, opts.testname)
+    return
+  end
+
+  vim.ui.input({ prompt = "Test class name:", default = opts.default_testname }, function(test_filename)
     if not test_filename then
       return
     end
 
-    local file = string.format("%s/%s.java", test_location, test_filename)
+    local file = string.format("%s/%s.java", opts.test_location, test_filename)
     if fs_util.file_exists(file) then
-      with_filepath(test_location, test_filename, callback)
+      with_filepath({ test_location = opts.test_location, default_testname = test_filename, callback = opts.callback })
       return
     end
 
-    callback(file, test_filename)
+    opts.callback(file, test_filename)
   end)
 end
 
@@ -78,7 +105,8 @@ local function create_class(opts)
       luasnip.snip_expand(create_snip)
     end
   else
-    vim.notify("Unsupported return value from class snippet")
+    vim.notify("Unsupported return value from class snippet", vim.log.levels.WARN)
+    return
   end
 
   after_snippet({ snippet = opts.snip_name, is_luasnip = is_luasnip })
@@ -91,51 +119,56 @@ function create_test.create_test(opts)
 
   local removed_filename = up_directory(bufname)
   local src_root = get_src_root(removed_filename)
-  local location = string.gsub(removed_filename, src_root .. "/main", src_root .. "/test")
+  local location = get_test_location(src_root, removed_filename)
 
-  with_filepath(location, default_filename, function(filepath, classname)
-    local class_snippets = values.lsp.test.class_snippets
-    local package = lsp_util.get_test_package(src_root, location)
+  with_filepath({
+    testname = opts.testname,
+    test_location = location,
+    default_testname = default_filename,
+    callback = function(filepath, classname)
+      local class_snippets = values.lsp.test.class_snippets
+      local package = lsp_util.get_test_package(src_root, location)
 
-    if opts.class_snippet and not class_snippets[opts.class_snippet] then
-      vim.notify("Unknown class snippet: " .. opts.class_snippet, vim.log.levels.ERROR)
-      return
-    end
+      if opts.class_snippet and not class_snippets[opts.class_snippet] then
+        vim.notify("Unknown class snippet: " .. opts.class_snippet, vim.log.levels.ERROR)
+        return
+      end
 
-    local snip_len = vim.tbl_count(class_snippets)
-    if snip_len == 0 or snip_len == 1 or opts.class_snippet then
-      fs_util.ensure_directory(location)
-      fs_util.create_file(filepath)
-    end
-
-    if snip_len == 0 then
-      lsp_util.jump_to_file(string.format("file://%s", filepath))
-      after_snippet({})
-    elseif snip_len == 1 or opts.class_snippet then
-      local name = get_class_snippet_name(opts)
-      create_class({
-        filepath = filepath,
-        classname = classname,
-        package = package,
-        class_snippet = class_snippets[name],
-        snip_name = name,
-      })
-    else
-      vim.ui.select(vim.tbl_keys(class_snippets), {
-        prompt = "Test snippet to use:",
-      }, function(choice)
+      local snip_len = vim.tbl_count(class_snippets)
+      if snip_len == 0 or snip_len == 1 or opts.class_snippet then
         fs_util.ensure_directory(location)
         fs_util.create_file(filepath)
+      end
+
+      if snip_len == 0 then
+        lsp_util.jump_to_file(string.format("file://%s", filepath))
+        after_snippet({})
+      elseif snip_len == 1 or opts.class_snippet then
+        local name = get_class_snippet_name(opts)
         create_class({
           filepath = filepath,
           classname = classname,
           package = package,
-          class_snippet = class_snippets[choice],
-          snip_name = choice,
+          class_snippet = class_snippets[name],
+          snip_name = name,
         })
-      end)
-    end
-  end)
+      else
+        vim.ui.select(vim.tbl_keys(class_snippets), {
+          prompt = "Test snippet to use:",
+        }, function(choice)
+          fs_util.ensure_directory(location)
+          fs_util.create_file(filepath)
+          create_class({
+            filepath = filepath,
+            classname = classname,
+            package = package,
+            class_snippet = class_snippets[choice],
+            snip_name = choice,
+          })
+        end)
+      end
+    end,
+  })
 end
 
 return create_test

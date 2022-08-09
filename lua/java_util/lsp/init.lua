@@ -47,6 +47,7 @@ lsp.rename = require_on_exported_call("java_util.lsp.internal.rename").rename
 ---     - Execute the `lsp.test.after_snippet` function.
 ---@param opts table|nil: options to specify the create_test behaviour.
 ---@field class_snippet string|nil: the key of one of your defined `lsp.test.class_snippets`. This will skip the prompt to select a class_snippet.
+---@field testname string|nil: The name of the test you want to create. This will skip the prompt to select a testname.
 lsp.create_test = require_on_exported_call("java_util.lsp.internal.create_test").create_test
 
 return lsp
