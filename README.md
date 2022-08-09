@@ -41,7 +41,7 @@ Using [packer.nvim](https://github.com/wbthomason/packer.nvim)
 ```lua
 use({
   "tobias-z/java-util.nvim",
-  branch = "main"
+  branch = "main",
   -- or branch = "dev"
   -- or tag = "0.1.0"
   requires = {

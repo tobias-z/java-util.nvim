@@ -63,10 +63,10 @@ local function insert_snippet_in_file(opts)
   end
 end
 
-local function after_snippet(args)
+local function after_snippet(opts)
   local a_snippet = values.lsp.test.after_snippet
   if a_snippet and type(a_snippet) == "function" then
-    a_snippet(args)
+    a_snippet(opts)
   end
 end
 

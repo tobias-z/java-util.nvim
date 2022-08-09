@@ -29,7 +29,24 @@ end
 ---@field name string|nil: Restrict clients used for rename to ones where client.name matches this field.
 lsp.rename = require_on_exported_call("java_util.lsp.internal.rename").rename
 
--- TODO: Add docs
+--- Create a test class for the current class you are in.
+--- Uses the configuration defined in `lsp.test` see |java_util.nvim| for information about configuration.
+---
+--- The function will do one of three things:
+---   1. No `class_snippet` found in `lsp.test.class_snippets`:
+---     - Create test file and place you there.
+---     - Execute the `lsp.test.after_snippet` function.
+---   2. A single `class_snippet` found in `lsp.test.class_snippets`:
+---     - Create test file and place you there.
+---     - Execute the class_snippet.
+---     - Execute the `lsp.test.after_snippet` function.
+---   3. Multiple `class_snippet`'s' found in `lsp.test.class_snippets`:
+---     - Create prompt to let you choose the snippet that should be used.
+---     - Create test file and place you there.
+---     - Execute the chosen class_snippet.
+---     - Execute the `lsp.test.after_snippet` function.
+---@param opts table|nil: options to specify the create_test behaviour.
+---@field class_snippet string|nil: the key of one of your defined `lsp.test.class_snippets`. This will skip the prompt to select a class_snippet.
 lsp.create_test = require_on_exported_call("java_util.lsp.internal.create_test").create_test
 
 return lsp
