@@ -36,6 +36,17 @@ local function with_filepath(test_location, default_testname, callback)
   end)
 end
 
+local function get_class_snippet_name(opts)
+  local class_snippets = values.lsp.test.class_snippets
+  if opts.class_snippet then
+    return opts.class_snippet
+  end
+  for key, _ in pairs(class_snippets) do
+    -- Is there a better way to do this?
+    return key
+  end
+end
+
 local function after_snippet(opts)
   local a_snippet = values.lsp.test.after_snippet
   if a_snippet and type(a_snippet) == "function" then
@@ -73,7 +84,8 @@ local function create_class(opts)
   after_snippet({ snippet = opts.snip_name, is_luasnip = is_luasnip })
 end
 
-function create_test.create_test()
+function create_test.create_test(opts)
+  opts = opts or {}
   local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
   local default_filename = string.format("%sTest", string.sub(bufname, string.find(bufname, "/[^/]*$") + 1, -6))
 
@@ -85,8 +97,13 @@ function create_test.create_test()
     local class_snippets = values.lsp.test.class_snippets
     local package = lsp_util.get_test_package(src_root, location)
 
+    if opts.class_snippet and not class_snippets[opts.class_snippet] then
+      vim.notify("Unknown class snippet: " .. opts.class_snippet, vim.log.levels.ERROR)
+      return
+    end
+
     local snip_len = vim.tbl_count(class_snippets)
-    if snip_len == 0 or snip_len == 1 then
+    if snip_len == 0 or snip_len == 1 or opts.class_snippet then
       fs_util.ensure_directory(location)
       fs_util.create_file(filepath)
     end
@@ -94,11 +111,8 @@ function create_test.create_test()
     if snip_len == 0 then
       lsp_util.jump_to_file(string.format("file://%s", filepath))
       after_snippet({})
-    elseif snip_len == 1 then
-      local name
-      for key, _ in pairs(class_snippets) do
-        name = key
-      end
+    elseif snip_len == 1 or opts.class_snippet then
+      local name = get_class_snippet_name(opts)
       create_class({
         filepath = filepath,
         classname = classname,
