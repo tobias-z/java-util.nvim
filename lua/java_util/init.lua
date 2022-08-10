@@ -18,10 +18,9 @@
 
 local java_util = {}
 
----@class test @Defines how the |lsp.create_test| function should behave when called
+---@class test @Defines how the |java_util.lsp.create_test| function should behave when called. See `https://github.com/tobias-z/java-util.nvim/wiki/Creating-Tests` for in depth test configuration
 ---@field after_snippet function|nil: will be called after a test class is created and snippet has been inserted
----@field class_snippets table: A table of snippets that should be considered when calling the |lsp.create_test| function.
----@see https://github.com/tobias-z/java-util.nvim/wiki/Creating-Tests
+---@field class_snippets table: A table of snippets that should be considered when calling the |java_util.lsp.create_test| function.
 
 --- The setup function to tailor the experience of java-util to match your needs
 ---
