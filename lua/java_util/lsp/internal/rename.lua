@@ -5,6 +5,10 @@ local ts_utils = require("nvim-treesitter.ts_utils")
 local rename = {}
 
 local function is_field(node)
+  if not node then
+    return false
+  end
+
   local first_parent = node:parent()
 
   if first_parent:type() == "field_access" then
