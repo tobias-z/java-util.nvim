@@ -16,6 +16,7 @@
 - [Usage](#usage)
 - [Features](#features)
   - [LSP](#lsp)
+- [Configuration](#configuration)
 
 ## Getting Started
 
@@ -50,9 +51,17 @@ use({
 })
 ```
 
+### Setup
+
+To make `java-util` work correctly you must call the setup function.
+
+```lua
+require("java_util").setup({})
+```
+
 ## Usage
 
-Functions can be executed through either user commands or calling lua functions
+Functions can be executed through either user commands or calling lua functions.
 
 Example using lua
 
@@ -78,9 +87,59 @@ For more in depth information about specific functions see `:help java_util`
 
 ### LSP
 
-| Functions    | Description                                                 |
-| ------------ | ----------------------------------------------------------- |
-| `lsp.rename` | Renames the word you are hovering. Supports lombok renaming |
+| Functions         | Description                                                                                                                                                                                                     |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lsp.rename`      | Renames the word you are hovering. Supports lombok renaming                                                                                                                                                     |
+| `lsp.create_test` | Creates a test class for the current class you are in. Allows for multiple test class configurations. For more information see [Creating Tests](https://github.com/tobias-z/java-util.nvim/wiki/Creating-Tests) |
+
+## Configuration
+
+In depth configuration for specific items can be found in [the wiki](https://github.com/tobias-z/java-util.nvim/wiki).
+
+The default options to this function are as follows:
+
+```lua
+require("java_util").setup({
+  lsp = {
+    test = {
+      use_defaults = true,
+      after_snippet = nil,
+      class_snippets = {
+        ["Basic"] = function(info)
+          local has_luasnip, luasnip = pcall(require, "luasnip")
+          if not has_luasnip then
+            return string.format(
+              [[
+package %s;
+
+public class %s {
+
+}]],
+              info.package,
+              info.classname
+            )
+          end
+
+          return luasnip.parser.parse_snippet(
+            "_",
+            string.format(
+              [[
+package %s;
+
+public class %s {
+
+    $0
+}]],
+              info.package,
+              info.classname
+            )
+          )
+        end
+      },
+    },
+  },
+})
+```
 
 ## Contributing
 
