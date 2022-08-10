@@ -11,7 +11,7 @@ package %s;
 
 public class %s {
 
-}]]          ,
+}]],
             info.package,
             info.classname
           )

@@ -1,6 +1,6 @@
 ---@tag java_util.nvim
 
----@config { ["name"] = "ABOUT" }
+---@config { ["name"] = "GETTING STARTED" }
 
 ---@brief [[
 ---
@@ -18,57 +18,17 @@
 
 local java_util = {}
 
+---@class test @Defines how the |lsp.create_test| function should behave when called
+---@field after_snippet function|nil: will be called after a test class is created and snippet has been inserted
+---@field class_snippets table: A table of snippets that should be considered when calling the |lsp.create_test| function.
+
 --- The setup function to tailor the experience of java-util to match your needs
 ---
 --- The setup function has to be called for java_util to function correctly.
 ---
 --- Default options can be found here: `https://github.com/tobias-z/java-util.nvim#configuration`
----
 ---@param opts table|nil: configuration options
----@field test table|nil: Determines how tests should be created
----
---- Fields: ~
----     {after_snippet} (function|nil) function called after a class is created and snippet has been inserted
----     {class_snippets} (table) Table of the class snippets that should be considered when calling the |lsp.create_test| function
----
---- Default:
----<code>
---- test = {
----   after_snippet = nil,
----   class_snippets = {
----     ["Basic"] = function(info)
----       local has_luasnip, luasnip = pcall(require, "luasnip")
----       if not has_luasnip then
----         return string.format(
----           [[
----   package %s;
----
----   public class %s {
----
----   }]],
----           info.package,
----           info.classname
----         )
----       end
----
----       return luasnip.parser.parse_snippet(
----         "_",
----         string.format(
----           [[
----   package %s;
----
----   public class %s {
----
----     $0
----   }]],
----           info.package,
----           info.classname
----         )
----       )
----     end,
----   }
---- }
----</code>
+---@field test test|nil: a |test| table
 function java_util.setup(opts)
   opts = opts or {}
   local config = require("java_util.config")

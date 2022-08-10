@@ -1,4 +1,36 @@
 ================================================================================
+ABOUT                                                           *java_util.nvim*
+
+`java-util.nvim` aims to provide extra functionality that extend the defaults
+of jdtls
+
+Information about specific functionality can be found at: `https://github.com/tobias-z/java-util.nvim`
+
+Or through the helptags
+
+  :h java_util.lsp
+  :h java_util.command
+
+function java_util.setup({opts})                  *function java_util.setup()*
+    The setup function to tailor the experience of java-util to match your
+    needs
+
+    The setup function has to be called for java_util to function correctly.
+
+    Default options can be found here:
+    `https://github.com/tobias-z/java-util.nvim#configuration`
+
+
+
+    Parameters: ~
+        {opts} (table|nil)  configuration options
+
+    Fields: ~
+        {test} (table|nil)  Determines how tests should be created
+
+
+
+================================================================================
 COMMAND                                                      *java_util.command*
 
 Java Util functions can be run through user commands. These can be quite useful

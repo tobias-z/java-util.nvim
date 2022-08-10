@@ -28,7 +28,7 @@ package %s;
 
 public class %s {
 
-}]]        ,
+}]],
           info.package,
           info.classname
         )
@@ -43,7 +43,7 @@ package %s;
 public class %s {
 
     $0
-}]]        ,
+}]],
           info.package,
           info.classname
         )
