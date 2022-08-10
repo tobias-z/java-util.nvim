@@ -18,3 +18,4 @@ snapshots:
 	sh ./scripts/build-snapshot.sh CreateTestNoClassSnippets create_test_no_class_snippets
 	sh ./scripts/build-snapshot.sh CreateTestStringClassSnippets create_test_string_class_snippets
 	sh ./scripts/build-snapshot.sh CreateTestLuasnipClassSnippets create_test_luasnip_class_snippets
+	sh ./scripts/build-snapshot.sh CreateTestAfterSnippetRun create_test_after_snippet_run

@@ -30,4 +30,8 @@ public class CreateTestLuasnipClassSnippetsTest {
 }]]
     ))
   end)
+
+  it("runs after_snippet when class is created", function()
+    ok(helpers.snapshot_matches("CreateTestAfterSnippetRun", "// hello world"))
+  end)
 end)
