@@ -1,5 +1,5 @@
 ================================================================================
-ABOUT                                                           *java_util.nvim*
+GETTING STARTED                                                 *java_util.nvim*
 
 `java-util.nvim` aims to provide extra functionality that extend the defaults
 of jdtls
@@ -11,7 +11,18 @@ Or through the helptags
   :h java_util.lsp
   :h java_util.command
 
-function java_util.setup({opts})                  *function java_util.setup()*
+test                                                                    *test*
+    Defines how the |lsp.create_test| function should behave when called
+
+    Fields: ~
+        {after_snippet}  (function|nil)  will be called after a test class is
+                                         created and snippet has been inserted
+        {class_snippets} (table)         A table of snippets that should be
+                                         considered when calling the
+                                         |lsp.create_test| function.
+
+
+java_util.setup({opts})                                    *java_util.setup()*
     The setup function to tailor the experience of java-util to match your
     needs
 
@@ -21,12 +32,11 @@ function java_util.setup({opts})                  *function java_util.setup()*
     `https://github.com/tobias-z/java-util.nvim#configuration`
 
 
-
     Parameters: ~
         {opts} (table|nil)  configuration options
 
     Fields: ~
-        {test} (table|nil)  Determines how tests should be created
+        {test} (test|nil)  a |test| table
 
 
 
