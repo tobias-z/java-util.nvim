@@ -12,14 +12,17 @@ Or through the helptags
   :h java_util.command
 
 test                                                                    *test*
-    Defines how the |lsp.create_test| function should behave when called
+    Defines how the |java_util.lsp.create_test| function should behave when
+    called. See
+    `https://github.com/tobias-z/java-util.nvim/wiki/Creating-Tests` for in
+    depth test configuration
 
     Fields: ~
         {after_snippet}  (function|nil)  will be called after a test class is
                                          created and snippet has been inserted
         {class_snippets} (table)         A table of snippets that should be
                                          considered when calling the
-                                         |lsp.create_test| function.
+                                         |java_util.lsp.create_test| function.
 
 
 java_util.setup({opts})                                    *java_util.setup()*
