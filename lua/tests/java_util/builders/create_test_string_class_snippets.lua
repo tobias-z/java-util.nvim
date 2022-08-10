@@ -1,21 +1,36 @@
+local something = {
+  -- ...
+  class_snippets = {
+    ["You snippet name"] = function(info)
+      return string.format(
+        [[
+package %s;
+
+public class %s {
+    // Whatever you want in here
+}]]      ,
+        info.package,
+        info.classname
+      )
+    end,
+  },
+}
 require("java_util").setup({
-  lsp = {
-    test = {
-      use_defaults = false,
-      class_snippets = {
-        ["Simple"] = function(info)
-          return string.format(
-            [[
+  test = {
+    use_defaults = false,
+    class_snippets = {
+      ["Simple"] = function(info)
+        return string.format(
+          [[
 package %s;
 
 public class %s {
 
-}]],
-            info.package,
-            info.classname
-          )
-        end,
-      },
+}]]        ,
+          info.package,
+          info.classname
+        )
+      end,
     },
   },
 })

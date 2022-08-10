@@ -64,7 +64,7 @@ local function with_filepath(opts)
 end
 
 local function get_class_snippet_name(opts)
-  local class_snippets = values.lsp.test.class_snippets
+  local class_snippets = values.test.class_snippets
   if opts.class_snippet then
     return opts.class_snippet
   end
@@ -72,7 +72,7 @@ local function get_class_snippet_name(opts)
 end
 
 local function after_snippet(opts)
-  local a_snippet = values.lsp.test.after_snippet
+  local a_snippet = values.test.after_snippet
   if a_snippet and type(a_snippet) == "function" then
     a_snippet(opts)
   end
@@ -123,7 +123,7 @@ function create_test.create_test(opts)
     test_location = location,
     default_testname = default_filename,
     callback = function(filepath, classname)
-      local class_snippets = values.lsp.test.class_snippets
+      local class_snippets = values.test.class_snippets
       local package = lsp_util.get_test_package(src_root, location)
 
       if opts.class_snippet and not class_snippets[opts.class_snippet] then

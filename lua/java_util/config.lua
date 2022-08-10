@@ -8,20 +8,18 @@ config.values = _JavaUtilConfigValues
 
 function config.set_defaults()
   config.values = {
-    lsp = {
-      test = {
-        use_defaults = true,
-        after_snippet = nil,
-        class_snippets = {},
-      },
+    test = {
+      use_defaults = true,
+      after_snippet = nil,
+      class_snippets = {},
     },
   }
 end
 
 local function create_test_defaults()
-  local test = config.values.lsp.test
+  local test = config.values.test
   if not test.class_snippets["Basic"] then
-    config.values.lsp.test.class_snippets["Basic"] = function(info)
+    config.values.test.class_snippets["Basic"] = function(info)
       local has_luasnip, luasnip = pcall(require, "luasnip")
       if not has_luasnip then
         return string.format(
@@ -55,7 +53,7 @@ public class %s {
 end
 
 function config.post_setup()
-  if config.values.lsp.test.use_defaults then
+  if config.values.test.use_defaults then
     create_test_defaults()
   end
 end

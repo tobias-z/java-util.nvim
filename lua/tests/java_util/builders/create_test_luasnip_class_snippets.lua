@@ -1,24 +1,22 @@
 require("java_util").setup({
-  lsp = {
-    test = {
-      use_defaults = false,
-      class_snippets = {
-        ["Simple"] = function(info)
-          return require("luasnip").parser.parse_snippet(
-            "_",
-            string.format(
-              [[
+  test = {
+    use_defaults = false,
+    class_snippets = {
+      ["Simple"] = function(info)
+        return require("luasnip").parser.parse_snippet(
+          "_",
+          string.format(
+            [[
 package %s;
 
 public class %s {
 
-}]],
-              info.package,
-              info.classname
-            )
+}]]          ,
+            info.package,
+            info.classname
           )
-        end,
-      },
+        )
+      end,
     },
   },
 })

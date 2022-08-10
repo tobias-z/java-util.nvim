@@ -1,8 +1,6 @@
 require("java_util").setup({
-  lsp = {
-    test = {
-      use_defaults = false,
-    },
+  test = {
+    use_defaults = false,
   },
 })
 

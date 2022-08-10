@@ -100,42 +100,40 @@ The default options to this function are as follows:
 
 ```lua
 require("java_util").setup({
-  lsp = {
-    test = {
-      use_defaults = true,
-      after_snippet = nil,
-      class_snippets = {
-        ["Basic"] = function(info)
-          local has_luasnip, luasnip = pcall(require, "luasnip")
-          if not has_luasnip then
-            return string.format(
-              [[
+  test = {
+    use_defaults = true,
+    after_snippet = nil,
+    class_snippets = {
+      ["Basic"] = function(info)
+        local has_luasnip, luasnip = pcall(require, "luasnip")
+        if not has_luasnip then
+          return string.format(
+            [[
 package %s;
 
 public class %s {
 
 }]],
-              info.package,
-              info.classname
-            )
-          end
-
-          return luasnip.parser.parse_snippet(
-            "_",
-            string.format(
-              [[
-package %s;
-
-public class %s {
-
-    $0
-}]],
-              info.package,
-              info.classname
-            )
+            info.package,
+            info.classname
           )
         end
-      },
+
+        return luasnip.parser.parse_snippet(
+          "_",
+          string.format(
+            [[
+package %s;
+
+public class %s {
+
+  $0
+}]],
+            info.package,
+            info.classname
+          )
+        )
+      end
     },
   },
 })

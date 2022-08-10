@@ -30,23 +30,23 @@ end
 lsp.rename = require_on_exported_call("java_util.lsp.internal.rename").rename
 
 --- Create a test class for the current class you are in.
---- Uses the configuration defined in `lsp.test` see |java_util.nvim| for information about configuration.
+--- Uses the configuration defined in `test` see |java_util.nvim| for information about configuration.
 ---
 --- The function will do one of three things:
----   1. No `class_snippet` found in `lsp.test.class_snippets`:
+---   1. No `class_snippet` found in `test.class_snippets`:
 ---     - Create test file and place you there.
----     - Execute the `lsp.test.after_snippet` function.
----   2. A single `class_snippet` found in `lsp.test.class_snippets`:
+---     - Execute the `test.after_snippet` function.
+---   2. A single `class_snippet` found in `test.class_snippets`:
 ---     - Create test file and place you there.
 ---     - Execute the class_snippet.
----     - Execute the `lsp.test.after_snippet` function.
----   3. Multiple `class_snippet`'s' found in `lsp.test.class_snippets`:
+---     - Execute the `test.after_snippet` function.
+---   3. Multiple `class_snippet`'s' found in `test.class_snippets`:
 ---     - Create prompt to let you choose the snippet that should be used.
 ---     - Create test file and place you there.
 ---     - Execute the chosen class_snippet.
----     - Execute the `lsp.test.after_snippet` function.
+---     - Execute the `test.after_snippet` function.
 ---@param opts table|nil: options to specify the create_test behaviour.
----@field class_snippet string|nil: the key of one of your defined `lsp.test.class_snippets`. This will skip the prompt to select a class_snippet.
+---@field class_snippet string|nil: the key of one of your defined `test.class_snippets`. This will skip the prompt to select a class_snippet.
 ---@field testname string|nil: The name of the test you want to create. This will skip the prompt to select a testname.
 lsp.create_test = require_on_exported_call("java_util.lsp.internal.create_test").create_test
 
