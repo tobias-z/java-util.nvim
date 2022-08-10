@@ -24,8 +24,46 @@ local java_util = {}
 ---
 --- Default options can be found here: `https://github.com/tobias-z/java-util.nvim#configuration`
 ---
----@param opts table
----@field lsp table
+---@param opts table|nil: configuration options
+---@field test table|nil: Determines how tests should be created
+---@field test.after_snippet function|nil: function called after a class is created and snippet has been inserted
+---@field test.class_snippets table: Table of the class snippets that should be considered when calling the |lsp.create_test| function
+---
+--- Default:
+---<code>
+--- class_snippets = {
+---   ["Basic"] = function(info)
+---     local has_luasnip, luasnip = pcall(require, "luasnip")
+---     if not has_luasnip then
+---       return string.format(
+---         [[
+--- package %s;
+---
+--- public class %s {
+---
+--- }]],
+---         info.package,
+---         info.classname
+---       )
+---     end
+---
+---     return luasnip.parser.parse_snippet(
+---       "_",
+---       string.format(
+---         [[
+--- package %s;
+---
+--- public class %s {
+---
+---   $0
+--- }]],
+---         info.package,
+---         info.classname
+---       )
+---     )
+---   end,
+---</code>
+--- }
 function java_util.setup(opts)
   opts = opts or {}
   local config = require("java_util.config")
