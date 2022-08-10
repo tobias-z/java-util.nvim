@@ -10,3 +10,11 @@ max_comment_line_length = false
 read_globals = {
   "vim",
 }
+
+globals = {
+  "_JavaUtilConfigValues",
+}
+
+ignore = {
+    "212", -- Unused argument _arg_name is easier to understand than _.
+}

@@ -1,4 +1,49 @@
 ================================================================================
+GETTING STARTED                                                 *java_util.nvim*
+
+`java-util.nvim` aims to provide extra functionality that extend the defaults
+of jdtls
+
+Information about specific functionality can be found at: `https://github.com/tobias-z/java-util.nvim`
+
+Or through the helptags
+
+  :h java_util.lsp
+  :h java_util.command
+
+test                                                                    *test*
+    Defines how the |java_util.lsp.create_test| function should behave when
+    called. See
+    `https://github.com/tobias-z/java-util.nvim/wiki/Creating-Tests` for in
+    depth test configuration
+
+    Fields: ~
+        {after_snippet}  (function|nil)  will be called after a test class is
+                                         created and snippet has been inserted
+        {class_snippets} (table)         A table of snippets that should be
+                                         considered when calling the
+                                         |java_util.lsp.create_test| function.
+
+
+java_util.setup({opts})                                    *java_util.setup()*
+    The setup function to tailor the experience of java-util to match your
+    needs
+
+    The setup function has to be called for java_util to function correctly.
+
+    Default options can be found here:
+    `https://github.com/tobias-z/java-util.nvim#configuration`
+
+
+    Parameters: ~
+        {opts} (table|nil)  configuration options
+
+    Fields: ~
+        {test} (test|nil)  a |test| table
+
+
+
+================================================================================
 COMMAND                                                      *java_util.command*
 
 Java Util functions can be run through user commands. These can be quite useful
@@ -38,6 +83,38 @@ lsp.rename({new_name}, {opts})                        *java_util.lsp.rename()*
                                  must return a list of clients.
         {name}   (string|nil)    Restrict clients used for rename to ones
                                  where client.name matches this field.
+
+
+lsp.create_test({opts})                          *java_util.lsp.create_test()*
+    Create a test class for the current class you are in. Uses the
+    configuration defined in `test` see |java_util.nvim| for information about
+    configuration.
+
+    The function will do one of three things:
+      1. No `class_snippet` found in `test.class_snippets`:
+        - Create test file and place you there.
+        - Execute the `test.after_snippet` function.
+      2. A single `class_snippet` found in `test.class_snippets`:
+        - Create test file and place you there.
+        - Execute the class_snippet.
+        - Execute the `test.after_snippet` function.
+      3. Multiple `class_snippet`'s' found in `test.class_snippets`:
+        - Create prompt to let you choose the snippet that should be used.
+        - Create test file and place you there.
+        - Execute the chosen class_snippet.
+        - Execute the `test.after_snippet` function.
+
+
+    Parameters: ~
+        {opts} (table|nil)  options to specify the create_test behaviour.
+
+    Options: ~
+        {class_snippet} (string|nil)  the key of one of your defined
+                                      `test.class_snippets`. This will skip
+                                      the prompt to select a class_snippet.
+        {testname}      (string|nil)  The name of the test you want to create.
+                                      This will skip the prompt to select a
+                                      testname.
 
 
 
