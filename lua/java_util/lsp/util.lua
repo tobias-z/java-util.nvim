@@ -34,6 +34,22 @@ function lsp_util.get_main_package(src_root, file_location)
   return get_package(src_root, file_location, false)
 end
 
+function lsp_util.up_directory(path)
+  return vim.fn.fnamemodify(path, ":h")
+end
+
+function lsp_util.get_src_root(path)
+  while not vim.endswith(path, "/src") do
+    path = lsp_util.up_directory(path)
+
+    if path == "/" then
+      error("unable to find src root")
+    end
+  end
+
+  return path
+end
+
 function lsp_util.jump_to_file(uri)
   vim.lsp.util.jump_to_location({
     range = {

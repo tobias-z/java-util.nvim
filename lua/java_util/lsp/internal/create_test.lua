@@ -4,22 +4,6 @@ local values = require("java_util.config").values
 
 local create_test = {}
 
-local function up_directory(path)
-  return vim.fn.fnamemodify(path, ":h")
-end
-
-local function get_src_root(path)
-  while not vim.endswith(path, "/src") do
-    path = up_directory(path)
-
-    if path == "/" then
-      error("unable to find src root")
-    end
-  end
-
-  return path
-end
-
 --- Changes /src/main to /src/test in the closest src_root to the current class
 local function get_test_location(src_root, filepath)
   local root_split = vim.split(string.sub(src_root, 2), "/")
@@ -114,8 +98,8 @@ function create_test.create_test(opts)
   local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
   local default_filename = string.format("%sTest", string.sub(bufname, string.find(bufname, "/[^/]*$") + 1, -6))
 
-  local removed_filename = up_directory(bufname)
-  local src_root = get_src_root(removed_filename)
+  local removed_filename = lsp_util.up_directory(bufname)
+  local src_root = lsp_util.get_src_root(removed_filename)
   local location = get_test_location(src_root, removed_filename)
 
   with_filepath({
