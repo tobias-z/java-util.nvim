@@ -28,7 +28,7 @@ function rename.rename(new_name, opts)
   if vim.o.filetype == "java" then
     local node_at_cursor = ts_utils.get_node_at_cursor(0)
     if is_field(node_at_cursor) then
-      rename._rename_field({ new_name = new_name, opts = opts, node_at_cursor = node_at_cursor })
+      rename.__rename_field({ new_name = new_name, opts = opts, node_at_cursor = node_at_cursor })
       return
     end
   end
@@ -49,7 +49,7 @@ local function with_name(new_name, callback)
   end
 end
 
-function rename._rename_field(opts)
+function rename.__rename_field(opts)
   local params = vim.lsp.util.make_position_params(0)
   params.context = { includeDeclaration = true }
   lsp_util.request_all({
