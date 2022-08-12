@@ -1,0 +1,47 @@
+name: Bug report
+description: Report a problem with JavaUtil
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: "Problem"
+      description: "Describe the problem you are reporting"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Neovim version"
+      description: "Output of `nvim --version`"
+      render: Markdown
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "Operating system and version"
+      placeholder: "macOS 11.5"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "JavaUtil version"
+      description: "branch or release version"
+      placeholder: "release 0.1.2"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Steps to reproduce"
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Expected behavior"
+  - type: textarea
+    attributes:
+      label: "Actual behavior"
+      description: "Logs, images and videos are appreciated"
+    validations:
+      required: true
