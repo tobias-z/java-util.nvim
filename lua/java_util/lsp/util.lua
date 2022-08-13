@@ -50,8 +50,15 @@ function lsp_util.get_src_root(path)
   return path
 end
 
+--- Checks if the uri is already loaded in a buffer. If it is it will just load it.
+--- If the uri is not loaded it will open it
 function lsp_util.jump_to_file(uri)
-  -- TODO: should check if buffer already is open. If it is, just go to it
+  local bufnr = vim.uri_to_bufnr(uri)
+  if vim.api.nvim_buf_is_loaded(bufnr) then
+    vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), bufnr)
+    return
+  end
+
   vim.lsp.util.jump_to_location({
     range = {
       start = {

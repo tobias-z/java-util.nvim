@@ -21,6 +21,8 @@ local function get_sorted_classes(classes)
   end)
 end
 
+---@param opts table
+---@param classes table: key is shortened classpath, value is full path
 local function handle_results(opts, classes)
   local found_len = vim.tbl_count(classes)
   if found_len == 0 then
