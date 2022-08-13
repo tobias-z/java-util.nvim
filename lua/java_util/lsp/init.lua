@@ -50,4 +50,7 @@ lsp.rename = require_on_exported_call("java_util.lsp.internal.rename").rename
 ---@field testname string|nil: The name of the test you want to create. This will skip the prompt to select a testname.
 lsp.create_test = require_on_exported_call("java_util.lsp.internal.create_test").create_test
 
+-- TODO: document this
+lsp.goto_test = require_on_exported_call("java_util.lsp.internal.goto_test").goto_test
+
 return lsp

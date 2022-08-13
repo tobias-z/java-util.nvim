@@ -9,12 +9,12 @@ import lombok.Setter;
 @Builder
 public class RenameLombokField {
 
-    private String username;
+    private String changed;
 
     public static void testMethod() {
         RenameLombokField renameLombokField =
-                RenameLombokField.builder().username("username").build();
-        renameLombokField.setUsername("bob");
-        System.out.println(renameLombokField.getUsername());
+                RenameLombokField.builder().changed("username").build();
+        renameLombokField.setChanged("bob");
+        System.out.println(renameLombokField.getChanged());
     }
 }
