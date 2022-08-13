@@ -51,6 +51,7 @@ function lsp_util.get_src_root(path)
 end
 
 function lsp_util.jump_to_file(uri)
+  -- TODO: should check if buffer already is open. If it is, just go to it
   vim.lsp.util.jump_to_location({
     range = {
       start = {
