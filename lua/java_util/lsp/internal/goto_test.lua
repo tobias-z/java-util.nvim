@@ -45,17 +45,55 @@ local function handle_results(opts, classes)
   end
 end
 
-function goto_test.__with_test_results(opts, callback)
+local function get_search_classes(classname)
+  local searches = {}
+  local cur = ""
+  for c in classname:gmatch(".") do
+    local ascii = string.byte(c)
+    local is_uppercase = ascii >= 65 and ascii <= 90
+    if is_uppercase then
+      if cur ~= "" then
+        table.insert(searches, cur)
+      end
+    end
+    cur = cur .. c
+  end
+  table.insert(searches, classname)
+
+  -- Only search for 50% of the class names
+  -- UserServiceImpl becomes { "UserServiceImpl", "UserService" } and ignores the User part
+  local search_items_rounded = math.floor((vim.tbl_count(searches) / 2) + 0.5)
+  local results = {}
+  for i = search_items_rounded + 0, 1, -1 do
+    table.insert(results, searches[i + 1])
+  end
+
+  if vim.tbl_count(results) == 0 then
+    table.insert(results, classname)
+  end
+
+  return results
+end
+
+function goto_test.__with_found_classes(opts, callback)
   local cwd = vim.fn.getcwd()
   local test_classes = {}
+  local args = {
+    opts.cwd,
+    "-type",
+    "f",
+  }
+
+  local searches = get_search_classes(opts.current_class)
+  for _, search_item in ipairs(searches) do
+    table.insert(args, "-name")
+    table.insert(args, string.format("%s*", search_item))
+  end
+
   plenary_util.execute_with_results({
     cmd = "find",
-    cwd = opts.src_root .. "/test",
-    args = {
-      string.format("%s/test", opts.src_root),
-      "-name",
-      string.format("%s*", opts.current_class),
-    },
+    cwd = opts.cwd,
+    args = args,
     process_result = function(line)
       -- make the result start from src/...
       local shortened = string.sub(line, string.len(cwd) + 2)
@@ -80,14 +118,27 @@ function goto_test.goto_test(opts)
   local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
   local src_root = lsp_util.get_src_root(bufname)
   local current_class = string.sub(bufname, string.find(bufname, "/[^/]*$") + 1, -6)
+  local combined_opts = vim.tbl_extend("force", { src_root = src_root, current_class = current_class }, opts)
   local is_in_main = string.find(bufname, string.format("%s/main", src_root)) ~= nil
   if is_in_main then
-    goto_test.__with_test_results(
-      vim.tbl_extend("force", { src_root = src_root, current_class = current_class }, opts),
-      handle_results
-    )
+    combined_opts.cwd = string.format("%s/test", src_root)
+    goto_test.__with_found_classes(combined_opts, handle_results)
   else
-    print("in test")
+    combined_opts.cwd = string.format("%s/main", src_root)
+    if vim.endswith(combined_opts.current_class, "Test") then
+      combined_opts.current_class = string.sub(combined_opts.current_class, 0, -5)
+    end
+    goto_test.__with_found_classes(combined_opts, function(_, classes)
+      -- If we found a resulting class called the same as test class without Test in the end, we will simply use that as out result
+      for key, result in pairs(classes) do
+        if vim.endswith(result, string.format("%s.java", combined_opts.current_class)) then
+          handle_results(combined_opts, { [key] = result })
+          return
+        end
+      end
+
+      handle_results(combined_opts, classes)
+    end)
   end
 end
 
