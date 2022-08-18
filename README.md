@@ -26,6 +26,7 @@ The plugin is tested against [Neovim (v0.7.0)](https://github.com/neovim/neovim/
 
 - Jdtls setup using either [lsp-config](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#jdtls) or [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls). (or anything that uses the built in neovim lsp)
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+- [Plenary](https://github.com/nvim-lua/plenary.nvim)
 
 ### Installation
 
