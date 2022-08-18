@@ -89,7 +89,6 @@ function goto_test.__with_found_classes(opts, callback)
     table.insert(args, "-name")
     table.insert(args, string.format("%s*Test.java", search_item))
   end
-
   plenary_util.execute_with_results({
     cmd = "find",
     cwd = opts.cwd,
@@ -121,7 +120,7 @@ function goto_test.goto_test(opts)
   }, opts)
   local src_root = lsp_util.get_src_root(bufname)
 
-  local is_in_main = string.find(bufname, string.format("%s/main", src_root)) ~= nil
+  local is_in_main = vim.startswith(string.sub(bufname, string.len(src_root) + 1), "/main")
   if is_in_main then
     combined_opts.cwd = string.format("%s/test", src_root)
     goto_test.__with_found_classes(combined_opts, handle_results)

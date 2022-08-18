@@ -9,7 +9,6 @@ local plenary_util = {}
 ---@field process_result function: will be called whenever the process outputs something
 ---@field process_complete function: will be called when the process is finished
 function plenary_util.execute_with_results(opts)
-  -- TODO: plenary should maybe not be a requirement
   Job:new({
     command = opts.cmd,
     cwd = opts.cwd,
