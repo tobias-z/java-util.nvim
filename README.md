@@ -47,7 +47,8 @@ use({
   -- or branch = "dev"
   -- or tag = "0.1.0"
   requires = {
-    { "nvim-treesitter/nvim-treesitter" }
+    { "nvim-treesitter/nvim-treesitter" },
+    { "nvim-lua/plenary.nvim" }
   }
 })
 ```
