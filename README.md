@@ -87,11 +87,11 @@ For more in depth information about specific functions see `:help java_util`
 
 ### LSP
 
-| Functions         | Description                                                                                                                                                                                                       |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `lsp.rename`      | Renames the word you are hovering. Supports lombok renaming                                                                                                                                                       |
-| `lsp.create_test` | Creates a test class for the current class you are in. Allows for multiple test class configurations. For more information see [Test Management](https://github.com/tobias-z/java-util.nvim/wiki/Test-Management) |
-| `lsp.goto_test`   | Bidirectional test movement, will either to go test or main class, depending on where you are. For more information see [ ]                                                                                       |
+| Functions         | Description                                                                                                                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `lsp.rename`      | Renames the word you are hovering. Supports lombok renaming                                                                                                                                                              |
+| `lsp.create_test` | Creates a test class for the current class you are in. Allows for multiple test class configurations. For more information see [Test Management](https://github.com/tobias-z/java-util.nvim/wiki/Test-Management)        |
+| `lsp.goto_test`   | Bidirectional test movement, will either to go test or main class, depending on where you are. For more information see [Going to Tests](https://github.com/tobias-z/java-util.nvim/wiki/Test-Management#going-to-tests) |
 
 ## Configuration
 
