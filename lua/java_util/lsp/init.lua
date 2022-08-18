@@ -50,4 +50,15 @@ lsp.rename = require_on_exported_call("java_util.lsp.internal.rename").rename
 ---@field testname string|nil: The name of the test you want to create. This will skip the prompt to select a testname.
 lsp.create_test = require_on_exported_call("java_util.lsp.internal.create_test").create_test
 
+--- Bidirectional test movement
+--- 1. If you are in a none test class, it will go to the test of your current class. If multiple are found, a prompt is shown for you to choose
+--- 2. If you are in a test class, it will go the the class you testing. If a direct match is found, it will take you directly there otherwise, it will prompt you with a list of possible matches.
+---   An example of a direct match would be, you are currently in a class called UserServiceImplTest. Here a direct match would be if a class is found called UserServiceImpl
+---@param opts table|nil: options to specify the goto_test behaviour.
+---@field on_no_results function|nil: Called if no results are found. Could be used to create a test if no class is found
+---@field current_class string|nil: Specifies the class used to search for tests/classes. Default is the current class you are in. If empty string is passed, it will show all tests found from the `opts.cwd`
+---@field filter function|nil: Predicate to filter the test results. Could be used if there are some tests you always don't want to see.
+---@field cwd string|nil: Specifies the cwd you want to search from. Default is the src root of the current module or project you are in.
+lsp.goto_test = require_on_exported_call("java_util.lsp.internal.goto_test").goto_test
+
 return lsp

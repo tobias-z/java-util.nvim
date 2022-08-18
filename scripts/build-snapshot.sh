@@ -13,5 +13,5 @@ nvim lua/tests/testproject/src/main/java/io/github/tobiasz/testproject/builders/
     -c "set filetype=java" \
     -c "lua require('tests.java_util.util.helpers').wait_for_ready_lsp()" \
     -c "luafile lua/tests/java_util/builders/$lua_builder.lua" \
-    -c "lua vim.wait(2000)" \
+    -c "lua vim.wait(4000)" \
     -c "wq! lua/tests/java_util/snapshots/$java_builder.snapshot"
