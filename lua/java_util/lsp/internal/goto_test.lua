@@ -75,7 +75,7 @@ local function get_search_classes(classname)
   return results
 end
 
-function goto_test.__with_found_classes(opts, callback)
+local function with_found_classes(opts, callback)
   local cwd = vim.fn.getcwd()
   local test_classes = {}
   local args = {
@@ -87,7 +87,7 @@ function goto_test.__with_found_classes(opts, callback)
   local searches = get_search_classes(opts.current_class)
   for _, search_item in ipairs(searches) do
     table.insert(args, "-name")
-    table.insert(args, string.format("%s*Test.java", search_item))
+    table.insert(args, string.format("%s*%s", search_item, opts.is_test and "" or "Test.java"))
   end
   plenary_util.execute_with_results({
     cmd = "find",
@@ -115,21 +115,18 @@ end
 function goto_test.goto_test(opts)
   opts = opts or {}
   local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
+  local src_root = lsp_util.get_src_root(bufname)
   local combined_opts = vim.tbl_extend("force", {
     current_class = string.sub(bufname, string.find(bufname, "/[^/]*$") + 1, -6),
+    is_test = vim.startswith(string.sub(bufname, string.len(src_root) + 1), "/test"),
   }, opts)
-  local src_root = lsp_util.get_src_root(bufname)
 
-  local is_in_main = vim.startswith(string.sub(bufname, string.len(src_root) + 1), "/main")
-  if is_in_main then
-    combined_opts.cwd = string.format("%s/test", src_root)
-    goto_test.__with_found_classes(combined_opts, handle_results)
-  else
+  if combined_opts.is_test then
     combined_opts.cwd = string.format("%s/main", src_root)
     if vim.endswith(combined_opts.current_class, "Test") then
       combined_opts.current_class = string.sub(combined_opts.current_class, 0, -5)
     end
-    goto_test.__with_found_classes(combined_opts, function(_, classes)
+    with_found_classes(combined_opts, function(_, classes)
       -- If we found a resulting class called the same as test class without Test in the end, we will simply use that as out result
       for key, result in pairs(classes) do
         if vim.endswith(result, string.format("%s.java", combined_opts.current_class)) then
@@ -140,6 +137,9 @@ function goto_test.goto_test(opts)
 
       handle_results(combined_opts, classes)
     end)
+  else
+    combined_opts.cwd = string.format("%s/test", src_root)
+    with_found_classes(combined_opts, handle_results)
   end
 end
 
