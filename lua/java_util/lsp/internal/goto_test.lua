@@ -87,7 +87,7 @@ function goto_test.__with_found_classes(opts, callback)
   local searches = get_search_classes(opts.current_class)
   for _, search_item in ipairs(searches) do
     table.insert(args, "-name")
-    table.insert(args, string.format("%s*", search_item))
+    table.insert(args, string.format("%s*Test.java", search_item))
   end
 
   plenary_util.execute_with_results({
@@ -116,9 +116,11 @@ end
 function goto_test.goto_test(opts)
   opts = opts or {}
   local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
+  local combined_opts = vim.tbl_extend("force", {
+    current_class = string.sub(bufname, string.find(bufname, "/[^/]*$") + 1, -6),
+  }, opts)
   local src_root = lsp_util.get_src_root(bufname)
-  local current_class = string.sub(bufname, string.find(bufname, "/[^/]*$") + 1, -6)
-  local combined_opts = vim.tbl_extend("force", { src_root = src_root, current_class = current_class }, opts)
+
   local is_in_main = string.find(bufname, string.format("%s/main", src_root)) ~= nil
   if is_in_main then
     combined_opts.cwd = string.format("%s/test", src_root)
