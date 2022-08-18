@@ -34,7 +34,31 @@ function lsp_util.get_main_package(src_root, file_location)
   return get_package(src_root, file_location, false)
 end
 
+function lsp_util.up_directory(path)
+  return vim.fn.fnamemodify(path, ":h")
+end
+
+function lsp_util.get_src_root(path)
+  while not vim.endswith(path, "/src") do
+    path = lsp_util.up_directory(path)
+
+    if path == "/" then
+      error("unable to find src root")
+    end
+  end
+
+  return path
+end
+
+--- Checks if the uri is already loaded in a buffer. If it is it will just load it.
+--- If the uri is not loaded it will open it
 function lsp_util.jump_to_file(uri)
+  local bufnr = vim.uri_to_bufnr(uri)
+  if vim.api.nvim_buf_is_loaded(bufnr) then
+    vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), bufnr)
+    return
+  end
+
   vim.lsp.util.jump_to_location({
     range = {
       start = {
