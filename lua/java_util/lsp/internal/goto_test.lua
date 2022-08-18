@@ -64,7 +64,7 @@ local function get_search_classes(classname)
   -- UserServiceImpl becomes { "UserServiceImpl", "UserService" } and ignores the User part
   local search_items_rounded = math.floor((vim.tbl_count(searches) / 2) + 0.5)
   local results = {}
-  for i = search_items_rounded + 0, 1, -1 do
+  for i = search_items_rounded, 1, -1 do
     table.insert(results, searches[i + 1])
   end
 
