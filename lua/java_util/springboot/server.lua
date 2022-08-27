@@ -27,8 +27,6 @@ end
 function Server:start()
   self._server = create_server(self._opts.host, self._opts.port, function(socket)
     socket:read_start(function(err, chunk)
-      print("got chunk", chunk)
-      print("got error", err)
       assert(not err, err)
       if chunk then
         socket:write(chunk) -- Echo received messages to the channel.
