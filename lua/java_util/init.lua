@@ -35,6 +35,8 @@ function java_util.setup(opts)
   config.set_defaults()
   config.values = vim.tbl_deep_extend("force", config.values, opts)
   config.post_setup()
+
+  require("java_util.springboot.setup").setup()
 end
 
 return java_util

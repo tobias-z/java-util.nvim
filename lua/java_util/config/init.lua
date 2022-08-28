@@ -6,12 +6,24 @@ _JavaUtilConfigValues = _JavaUtilConfigValues or {}
 
 config.values = _JavaUtilConfigValues
 
+local home = os.getenv("HOME")
+
 function config.set_defaults()
   config.values = {
+    logging_file = home .. "/.cache/nvim/java-util.nvim.log",
     test = {
       use_defaults = true,
       after_snippet = nil,
       class_snippets = {},
+    },
+    jdtls = {
+      jdtls_location = home .. "/.local/share/nvim/lsp_servers/jdtls", -- TODO: make default to our built version
+      lombok_support = true,
+      workspace_location = home .. "/.local/share/nvim/jdtls/workspaces",
+      config = {},
+    },
+    springboot = {
+      boot_ls = {},
     },
   }
 end
@@ -56,6 +68,8 @@ function config.post_setup()
   if config.values.test.use_defaults then
     create_test_defaults()
   end
+  require("java_util.config.jdtls_config").create_config()
+  require("java_util.config.springboot_config").create_config()
 end
 
 return config
